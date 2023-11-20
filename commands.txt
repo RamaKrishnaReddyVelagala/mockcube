@@ -1,0 +1,5 @@
+celery -A celery_tasks.tasks worker --loglevel=info
+
+brew services start rabbitmq
+
+python3 app.py
