@@ -1,34 +1,23 @@
-from flask import Flask, jsonify
-from celery.result import AsyncResult
-from celery_tasks.tasks import some_long_task, celery # Import the Celery task function
+from flask import Flask, request
+from markupsafe import escape
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return "Flask - Test Ping"
+@app.route("/")
+def welcome_message():
+    return "Welcome to Flask Index Page."
 
-@app.route('/longtask')
-def long_task():
-    # import time
-    # time.sleep(10)
-    # return "slept for 10 sec"
+@app.route("/user:<name>")
+def welcome_user(name):
+    return f"welcome special user {escape(name)}"
 
-    # Trigger the Celery task
-    task = some_long_task.delay()  
-    return f"Started long task with ID: {task.id}"
-    
-@app.route('/task_status/<task_id>')
-def task_status(task_id):
-    # Check the status of the Celery task
-    task = AsyncResult(task_id, app=celery)
-    
-    if task.successful():
-        return jsonify({"status": "Task completed", "result": task.result})
-    elif task.failed():
-        return jsonify({"status": "Task failed", "error": str(task.result)})
-    else:
-        return jsonify({"status": "Task is still running"})
+@app.route("/search", methods=['GET'])
+def search_user():
+    args = request.args
+    # print(args.to_dict())
+    print(args.get("name"))
+    print(args.get("location"))
+    return args
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
