@@ -1,13 +1,14 @@
-from celery import Celery, shared_task
-import time
+from celery import Celery
+from time import sleep
 
-# Create a Celery instance
-celery = Celery('tasks', backend='rpc://', broker='amqp://guest@localhost//')
+app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@localhost//')
 
-@shared_task(name='celery_tasks.tasks.some_long_task')
-def some_long_task():
-    print("Started long task")
-    time.sleep(10)
-    print("Task completed")
-    return "Completed"
+app.config_from_object('celeryconfig')
+# The first argument to Celery is the name of the current module.
+# The second argument is the broker keyword argument, specifying the URL of the message broker you want to use
+
+@app.task
+def add(x, y):
+    # sleep(5)
+    return x + y
 
