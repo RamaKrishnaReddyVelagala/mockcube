@@ -1,8 +1,10 @@
 celery -A celery_tasks.tasks worker --loglevel=info
 
-brew services start rabbitmq
+# brew services start rabbitmq
 
 python3 app.py
+
+# Docker command for rabbitmq image.
 docker run -d -p 5672:5672 rabbitmq
 
 
