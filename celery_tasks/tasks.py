@@ -1,14 +1,14 @@
 from celery import Celery
 from time import sleep
 
-app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@localhost//')
+celery_app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@localhost//')
 
-app.config_from_object('celeryconfig')
+celery_app.config_from_object('celery_tasks.celeryconfig')
 # The first argument to Celery is the name of the current module.
 # The second argument is the broker keyword argument, specifying the URL of the message broker you want to use
 
-@app.task
+@celery_app.task
 def add(x, y):
-    # sleep(5)
-    return x + y
+    # sleep(20)
+    return int(x) + int(y)
 

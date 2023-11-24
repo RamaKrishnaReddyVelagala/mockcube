@@ -3,3 +3,10 @@ celery -A celery_tasks.tasks worker --loglevel=info
 brew services start rabbitmq
 
 python3 app.py
+docker run -d -p 5672:5672 rabbitmq
+
+
+Url:
+1)http://127.0.0.1:5000/
+2)http://127.0.0.1:5000/add?x=10&y=30
+3)http://127.0.0.1:5000/add_result/85605a5e-ecfc-439c-95ca-1f230fdd55fa
